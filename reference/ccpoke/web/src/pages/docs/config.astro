@@ -1,0 +1,14 @@
+---
+import DocsBaseLayout from "../../components/docs/DocsBaseLayout.astro";
+import DocsLayout from "../../components/docs/DocsLayout.astro";
+import DocsConfigPage from "../../components/docs/pages/DocsConfigPage.astro";
+import { ts, type Locale } from "../../i18n";
+
+const locale: Locale = "en";
+---
+
+<DocsBaseLayout locale={locale} currentPage="config" title={`Configuration — ${ts(locale, "docsTitle")}`}>
+  <DocsLayout locale={locale} currentPage="config">
+    <DocsConfigPage locale={locale} />
+  </DocsLayout>
+</DocsBaseLayout>

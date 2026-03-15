@@ -1,0 +1,37 @@
+{
+  "name": "claude-code-dashboard",
+  "version": "0.1.0",
+  "description": "Remote control dashboard for Claude Code CLI via web and Telegram",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "ccd": "./dist/src/cli.js"
+  },
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "ccd": "tsx src/cli.ts",
+    "ccd:open": "tsx src/cli.ts open",
+    "ccd:setup": "tsx src/cli.ts setup",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "setup": "tsx scripts/setup.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "@types/ws": "^8.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
+}

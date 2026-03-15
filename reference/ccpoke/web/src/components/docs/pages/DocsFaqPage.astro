@@ -1,0 +1,47 @@
+---
+import { ts, DEFAULT_LOCALE, type Locale } from "../../../i18n";
+import FaqItem from "../../docs/FaqItem.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const breadcrumbHref = locale === DEFAULT_LOCALE ? `${base}docs/` : `${base}${locale}/docs/`;
+---
+
+<article class="docs-content">
+  <nav class="docs-breadcrumb">
+    <a href={breadcrumbHref}>Docs</a>
+    <span class="docs-breadcrumb__sep">›</span>
+    {ts(locale, "docsFaqTitle")}
+  </nav>
+  <section class="docs-content__section">
+    <h1>{ts(locale, "docsFaqTitle")}</h1>
+    <div class="docs-content__faq-list">
+      <FaqItem question={ts(locale, "docsFaq1Q")} answer={ts(locale, "docsFaq1A")} />
+      <FaqItem question={ts(locale, "docsFaq2Q")} answer={ts(locale, "docsFaq2A")} />
+      <FaqItem question={ts(locale, "docsFaq3Q")} answer={ts(locale, "docsFaq3A")} />
+      <FaqItem question={ts(locale, "docsFaq4Q")} answer={ts(locale, "docsFaq4A")} />
+      <FaqItem question={ts(locale, "docsFaq5Q")} answer={ts(locale, "docsFaq5A")} />
+      <FaqItem question={ts(locale, "docsFaq6Q")} answer={ts(locale, "docsFaq6A")} />
+      <FaqItem question={ts(locale, "docsFaq7Q")} answer={ts(locale, "docsFaq7A")} />
+      <FaqItem question={ts(locale, "docsFaq8Q")} answer={ts(locale, "docsFaq8A")} />
+      <FaqItem question={ts(locale, "docsFaq9Q")} answer={ts(locale, "docsFaq9A")} />
+    </div>
+  </section>
+
+  <section class="docs-content__cta">
+    <h2>{ts(locale, "docsCtaTitle")}</h2>
+    <p>{ts(locale, "docsCtaSub")}</p>
+    <div class="docs-content__cta-btns">
+      <a href="https://github.com/kaida-palooza/ccpoke" target="_blank" rel="noopener" class="docs-content__cta-github">
+        ⭐ {ts(locale, "ctaGithub")}
+      </a>
+      <a href={breadcrumbHref} class="docs-content__cta-start">
+        {ts(locale, "ctaGetStarted")}
+      </a>
+    </div>
+  </section>
+</article>

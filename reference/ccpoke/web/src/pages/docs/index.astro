@@ -1,0 +1,21 @@
+---
+import DocsBaseLayout from "../../components/docs/DocsBaseLayout.astro";
+import DocsLayout from "../../components/docs/DocsLayout.astro";
+import DocsToc from "../../components/docs/DocsToc.astro";
+import DocsOverviewPage from "../../components/docs/pages/DocsOverviewPage.astro";
+import { ts, type Locale } from "../../i18n";
+
+const locale: Locale = "en";
+
+const tocItems = [
+  { id: "overview", label: ts(locale, "docsSidebarOverview") },
+  { id: "getting-started", label: ts(locale, "docsSidebarGettingStarted") },
+];
+---
+
+<DocsBaseLayout locale={locale} currentPage="">
+  <DocsLayout locale={locale} currentPage="">
+    <DocsOverviewPage locale={locale} />
+    <DocsToc locale={locale} items={tocItems} slot="toc" />
+  </DocsLayout>
+</DocsBaseLayout>

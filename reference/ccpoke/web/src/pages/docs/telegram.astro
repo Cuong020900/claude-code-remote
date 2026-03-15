@@ -1,0 +1,24 @@
+---
+import DocsBaseLayout from "../../components/docs/DocsBaseLayout.astro";
+import DocsLayout from "../../components/docs/DocsLayout.astro";
+import DocsToc from "../../components/docs/DocsToc.astro";
+import DocsTelegramPage from "../../components/docs/pages/DocsTelegramPage.astro";
+import { ts, type Locale } from "../../i18n";
+
+const locale: Locale = "en";
+
+const tocItems = [
+  { id: "tg-commands", label: ts(locale, "docsSidebarTgCommands") },
+  { id: "tg-notifications", label: ts(locale, "docsSidebarTgNotifications") },
+  { id: "tg-chat", label: ts(locale, "docsSidebarTgChat") },
+  { id: "tg-permissions", label: ts(locale, "docsSidebarTgPermissions") },
+  { id: "tg-questions", label: ts(locale, "docsSidebarTgQuestions") },
+];
+---
+
+<DocsBaseLayout locale={locale} currentPage="telegram" title={`Telegram — ${ts(locale, "docsTitle")}`}>
+  <DocsLayout locale={locale} currentPage="telegram">
+    <DocsTelegramPage locale={locale} />
+    <DocsToc locale={locale} items={tocItems} slot="toc" />
+  </DocsLayout>
+</DocsBaseLayout>

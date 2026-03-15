@@ -1,0 +1,38 @@
+---
+import { ts, DEFAULT_LOCALE, type Locale } from "../../i18n";
+
+interface PaginationLink {
+  page: string;
+  labelKey: string;
+}
+
+interface Props {
+  locale: Locale;
+  prev?: PaginationLink;
+  next?: PaginationLink;
+}
+
+const { locale, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+function buildHref(page: string): string {
+  const localePrefix = locale === DEFAULT_LOCALE ? "" : `${locale}/`;
+  const pageSuffix = page ? `${page}/` : "";
+  return `${base}${localePrefix}docs/${pageSuffix}`;
+}
+---
+
+<nav class="docs-pagination">
+  {prev ? (
+    <a href={buildHref(prev.page)} class="docs-pagination__link docs-pagination__link--prev">
+      <span class="docs-pagination__label">{ts(locale, "docsPaginationPrev")}</span>
+      <span class="docs-pagination__title">{ts(locale, prev.labelKey)}</span>
+    </a>
+  ) : <span />}
+  {next ? (
+    <a href={buildHref(next.page)} class="docs-pagination__link docs-pagination__link--next">
+      <span class="docs-pagination__label">{ts(locale, "docsPaginationNext")}</span>
+      <span class="docs-pagination__title">{ts(locale, next.labelKey)}</span>
+    </a>
+  ) : <span />}
+</nav>

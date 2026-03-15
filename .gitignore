@@ -1,0 +1,7 @@
+# /reference
+/.claude
+/.agent
+node_modules/
+dist/
+.env
+.DS_Store

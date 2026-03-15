@@ -1,0 +1,9 @@
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="2" r="1"/>
+  <path d="M12 4v4"/>
+  <rect x="4" y="8" width="16" height="12" rx="2"/>
+  <path d="M2 13v2"/>
+  <path d="M22 13v2"/>
+  <circle cx="9" cy="13" r="1"/>
+  <circle cx="15" cy="13" r="1"/>
+</svg>

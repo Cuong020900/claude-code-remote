@@ -1,0 +1,205 @@
+---
+import { ts, type Locale } from "../../i18n";
+import { icons } from "../../assets/icons";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const leftNodes = [
+  { name: "Telegram", icon: icons.brandTelegram, active: true },
+  { name: "Discord", icon: icons.brandDiscord, active: true },
+  { name: "Slack", icon: icons.brandSlack, active: true },
+  { name: "Zalo", icon: icons.brandZalo, active: false },
+];
+
+const rightNodes = [
+  { name: "Claude Code", icon: icons.brandClaude, active: true },
+  { name: "Cursor CLI", icon: icons.brandCursor, active: true },
+  { name: "Gemini CLI", icon: icons.brandGemini, active: true },
+  { name: "Antigravity", icon: icons.brandGoogle, active: false },
+  { name: "Codex CLI", icon: icons.brandOpenai, active: true },
+  { name: "OpenCode", icon: icons.brandOpencode, active: true },
+  { name: "Copilot", icon: icons.brandCopilot, active: false },
+];
+---
+
+<section class="sect-section py-14 reveal" id="how">
+  <div class="mb-12">
+    <p class="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent mb-2 reveal-item">{ts(locale, "howLabel")}</p>
+    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight mb-2 reveal-item" style="transition-delay: 0.06s">{ts(locale, "howTitle")}</h2>
+
+  </div>
+
+  <div class="flow-diagram" id="flow-diagram">
+    <div class="flow-nodes flow-nodes--left">
+      {leftNodes.map((node, idx) => (
+        <div class={`flow-node flow-node--${node.active ? "active" : "inactive"} reveal-left`} data-flow-node="left" data-flow-active={node.active ? "true" : "false"} style={`transition-delay: ${idx * 0.08}s`}>
+          <span class="flow-node__icon" set:html={node.icon} />
+          <span>{node.name}</span>
+          {!node.active && <span class="flow-node__soon">{ts(locale, "howSoon")}</span>}
+        </div>
+      ))}
+    </div>
+
+    <div class="flow-center">
+      <svg class="flow-svg" id="flow-svg" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <defs>
+          <radialGradient id="dot-glow">
+            <stop offset="0%" stop-color="rgba(217,119,87,0.6)" />
+            <stop offset="100%" stop-color="rgba(217,119,87,0)" />
+          </radialGradient>
+        </defs>
+      </svg>
+
+      <div class="flow-hub reveal-scale" id="flow-hub" style="transition-delay: 0.3s">
+        <span class="flow-hub__logo text-accent" set:html={icons.logoOutline} />
+        <span class="flow-hub__label">ccpoke</span>
+      </div>
+    </div>
+
+    <div class="flow-nodes flow-nodes--right">
+      {rightNodes.map((node, idx) => (
+        <div class={`flow-node flow-node--${node.active ? "active" : "inactive"} reveal-right`} data-flow-node="right" data-flow-active={node.active ? "true" : "false"} style={`transition-delay: ${0.35 + idx * 0.08}s`}>
+          <span class="flow-node__icon" set:html={node.icon} />
+          <span>{node.name}</span>
+          {!node.active && <span class="flow-node__soon">{ts(locale, "howSoon")}</span>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+function drawFlowPaths() {
+  const svg = document.getElementById("flow-svg") as SVGSVGElement | null;
+  const hub = document.getElementById("flow-hub");
+  const diagram = document.getElementById("flow-diagram");
+  if (!svg || !hub || !diagram) return;
+
+  const defs = svg.querySelector("defs");
+  svg.innerHTML = "";
+  if (defs) svg.appendChild(defs);
+
+  const svgRect = svg.getBoundingClientRect();
+  const hubRect = hub.getBoundingClientRect();
+
+  const hubLeftX = hubRect.left - svgRect.left;
+  const hubRightX = hubRect.right - svgRect.left;
+  const hubCenterY = hubRect.top + hubRect.height / 2 - svgRect.top;
+
+  const leftNodes = diagram.querySelectorAll('[data-flow-node="left"]');
+  const rightNodes = diagram.querySelectorAll('[data-flow-node="right"]');
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function buildCurvePath(startX: number, startY: number, endX: number, endY: number) {
+    const cpX = startX + (endX - startX) * 0.5;
+    return `M ${startX} ${startY} C ${cpX} ${startY}, ${cpX} ${endY}, ${endX} ${endY}`;
+  }
+
+  function createBasePath(d: string, isActive: boolean) {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    path.setAttribute("class", `flow-path flow-path--${isActive ? "active" : "inactive"}`);
+    svg!.appendChild(path);
+    return path;
+  }
+
+  function setupNodeHover(node: Element, pathEl: SVGPathElement) {
+    node.addEventListener("mouseenter", () => {
+      pathEl.classList.add("flow-path--highlight");
+      node.classList.add("flow-node--highlight");
+    });
+    node.addEventListener("mouseleave", () => {
+      pathEl.classList.remove("flow-path--highlight");
+      node.classList.remove("flow-node--highlight");
+    });
+  }
+
+  function createFlowDot(d: string, delay: number, reverse: boolean) {
+    if (prefersReducedMotion) return;
+
+    const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    group.setAttribute("opacity", "0");
+
+    const fadeIn = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    fadeIn.setAttribute("attributeName", "opacity");
+    fadeIn.setAttribute("from", "0");
+    fadeIn.setAttribute("to", "0.85");
+    fadeIn.setAttribute("dur", "0.01s");
+    fadeIn.setAttribute("begin", `${delay}s`);
+    fadeIn.setAttribute("fill", "freeze");
+    group.appendChild(fadeIn);
+
+    const glow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    glow.setAttribute("r", "4");
+    glow.setAttribute("fill", "url(#dot-glow)");
+
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("r", "2");
+    dot.setAttribute("fill", "var(--color-accent)");
+
+    [glow, dot].forEach((el) => {
+      const motion = document.createElementNS("http://www.w3.org/2000/svg", "animateMotion");
+      motion.setAttribute("dur", "4s");
+      motion.setAttribute("repeatCount", "indefinite");
+      motion.setAttribute("begin", `${delay}s`);
+      motion.setAttribute("path", d);
+      if (reverse) {
+        motion.setAttribute("keyPoints", "1;0");
+        motion.setAttribute("keyTimes", "0;1");
+      }
+      el.appendChild(motion);
+    });
+
+    group.appendChild(glow);
+    group.appendChild(dot);
+    svg!.appendChild(group);
+  }
+
+  let activeIndex = 0;
+
+  leftNodes.forEach((node) => {
+    const nodeRect = node.getBoundingClientRect();
+    const startX = nodeRect.right - svgRect.left;
+    const startY = nodeRect.top + nodeRect.height / 2 - svgRect.top;
+    const d = buildCurvePath(startX, startY, hubLeftX, hubCenterY);
+    const isActive = node.getAttribute("data-flow-active") === "true";
+    const pathEl = createBasePath(d, isActive);
+
+    if (isActive) {
+      setupNodeHover(node, pathEl);
+      const reverse = activeIndex % 2 !== 0;
+      createFlowDot(d, activeIndex * 1.5, reverse);
+      activeIndex++;
+    }
+  });
+
+  rightNodes.forEach((node) => {
+    const nodeRect = node.getBoundingClientRect();
+    const endX = nodeRect.left - svgRect.left;
+    const endY = nodeRect.top + nodeRect.height / 2 - svgRect.top;
+    const d = buildCurvePath(hubRightX, hubCenterY, endX, endY);
+    const isActive = node.getAttribute("data-flow-active") === "true";
+    const pathEl = createBasePath(d, isActive);
+
+    if (isActive) {
+      setupNodeHover(node, pathEl);
+      const reverse = activeIndex % 2 !== 0;
+      createFlowDot(d, activeIndex * 1.5, reverse);
+      activeIndex++;
+    }
+  });
+}
+
+drawFlowPaths();
+
+let resizeTimer: ReturnType<typeof setTimeout>;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(drawFlowPaths, 150);
+});
+</script>

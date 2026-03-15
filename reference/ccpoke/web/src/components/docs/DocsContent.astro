@@ -1,0 +1,243 @@
+---
+import { ts, type Locale } from "../../i18n";
+import FaqItem from "../docs/FaqItem.astro";
+import CommandBlock from "./CommandBlock.astro";
+import InteractionBlock from "./InteractionBlock.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<article class="docs-content">
+
+  <section id="overview" class="docs-content__section">
+    <h1>{ts(locale, "docsOverviewTitle")}</h1>
+    <p>{ts(locale, "docsOverviewDesc")}</p>
+    <p set:html={ts(locale, "docsOverviewDesc2")} />
+    <pre class="docs-content__diagram">{ts(locale, "docsOverviewDiagram")}</pre>
+  </section>
+
+  <section id="getting-started" class="docs-content__section">
+    <h2>{ts(locale, "docsGettingStartedTitle")}</h2>
+    <p>{ts(locale, "docsGettingStartedPrereqs")}</p>
+
+    <div class="docs-content__steps">
+      <div class="docs-content__step">
+        <span class="docs-content__step-num">1</span>
+        <div>
+          <h3>{ts(locale, "docsStep1Title")}</h3>
+          <p set:html={ts(locale, "docsStep1Desc")} />
+        </div>
+      </div>
+      <div class="docs-content__step">
+        <span class="docs-content__step-num">2</span>
+        <div>
+          <h3>{ts(locale, "docsStep2Title")}</h3>
+          <p set:html={ts(locale, "docsStep2Desc")} />
+          <pre class="docs-content__terminal">{ts(locale, "docsStep2Term")}</pre>
+        </div>
+      </div>
+      <div class="docs-content__step">
+        <span class="docs-content__step-num">3</span>
+        <div>
+          <h3>{ts(locale, "docsStep3Title")}</h3>
+          <p set:html={ts(locale, "docsStep3Desc")} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cli" class="docs-content__section">
+    <h2>{ts(locale, "docsCliTitle")}</h2>
+    <p>{ts(locale, "docsCliDesc")}</p>
+
+    <CommandBlock
+      sectionId="cli-run"
+      command="ccpoke"
+      description={ts(locale, "docsCliRunDesc")}
+      whenToUse={ts(locale, "docsCliRunWhen")}
+      terminal={ts(locale, "docsCliRunTerm")}
+    />
+    <CommandBlock
+      sectionId="cli-setup"
+      command="ccpoke setup"
+      description={ts(locale, "docsCliSetupDesc")}
+      whenToUse={ts(locale, "docsCliSetupWhen")}
+      terminal={ts(locale, "docsCliSetupTerm")}
+    />
+    <CommandBlock
+      sectionId="cli-project"
+      command="ccpoke project"
+      description={ts(locale, "docsCliProjectDesc")}
+      whenToUse={ts(locale, "docsCliProjectWhen")}
+      terminal={ts(locale, "docsCliProjectTerm")}
+    />
+    <CommandBlock
+      sectionId="cli-update"
+      command="ccpoke update"
+      description={ts(locale, "docsCliUpdateDesc")}
+      whenToUse={ts(locale, "docsCliUpdateWhen")}
+      terminal={ts(locale, "docsCliUpdateTerm")}
+    />
+    <CommandBlock
+      sectionId="cli-uninstall"
+      command="ccpoke uninstall"
+      description={ts(locale, "docsCliUninstallDesc")}
+      whenToUse={ts(locale, "docsCliUninstallWhen")}
+      terminal={ts(locale, "docsCliUninstallTerm")}
+    />
+    <CommandBlock
+      sectionId="cli-help"
+      command="ccpoke help"
+      description={ts(locale, "docsCliHelpDesc")}
+      whenToUse={ts(locale, "docsCliHelpWhen")}
+      terminal={ts(locale, "docsCliHelpTerm")}
+    />
+  </section>
+
+  <section id="telegram" class="docs-content__section">
+    <h2>{ts(locale, "docsTelegramTitle")}</h2>
+    <p>{ts(locale, "docsTelegramDesc")}</p>
+
+    <div id="tg-commands" class="docs-content__subsection">
+      <h3>{ts(locale, "docsTgCommandsTitle")}</h3>
+      <p>{ts(locale, "docsTgCommandsDesc")}</p>
+      <table class="docs-config-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>{ts(locale, "docsConfigDescHeader")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{ts(locale, "docsTgCmdStart")}</td>
+            <td>{ts(locale, "docsTgCmdStartDesc")}</td>
+          </tr>
+          <tr>
+            <td>{ts(locale, "docsTgCmdSessions")}</td>
+            <td>{ts(locale, "docsTgCmdSessionsDesc")}</td>
+          </tr>
+          <tr>
+            <td>{ts(locale, "docsTgCmdProjects")}</td>
+            <td>{ts(locale, "docsTgCmdProjectsDesc")}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="tg-notifications" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgNotificationsTitle")}
+        trigger={ts(locale, "docsTgNotificationsTrigger")}
+        description={ts(locale, "docsTgNotificationsDesc")}
+        demo={ts(locale, "docsTgNotificationsDemo")}
+      />
+    </div>
+
+    <div id="tg-chat" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgChatTitle")}
+        trigger={ts(locale, "docsTgChatTrigger")}
+        description={ts(locale, "docsTgChatDesc")}
+        demo={ts(locale, "docsTgChatDemo")}
+      />
+    </div>
+
+    <div id="tg-permissions" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgPermissionsTitle")}
+        trigger={ts(locale, "docsTgPermissionsTrigger")}
+        description={ts(locale, "docsTgPermissionsDesc")}
+        demo={ts(locale, "docsTgPermissionsDemo")}
+      />
+    </div>
+
+    <div id="tg-questions" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgQuestionsTitle")}
+        trigger={ts(locale, "docsTgQuestionsTrigger")}
+        description={ts(locale, "docsTgQuestionsDesc")}
+        demo={ts(locale, "docsTgQuestionsDemo")}
+      />
+    </div>
+  </section>
+
+  <section id="config" class="docs-content__section">
+    <h2>{ts(locale, "docsConfigTitle")}</h2>
+    <p>{ts(locale, "docsConfigDesc")}</p>
+    <p class="docs-content__config-file">{ts(locale, "docsConfigFileLocation")}</p>
+
+    <table class="docs-config-table">
+      <thead>
+        <tr>
+          <th>{ts(locale, "docsConfigKeyHeader")}</th>
+          <th>{ts(locale, "docsConfigTypeHeader")}</th>
+          <th>{ts(locale, "docsConfigDefaultHeader")}</th>
+          <th>{ts(locale, "docsConfigDescHeader")}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>telegram_bot_token</td><td>string</td><td>required</td><td>{ts(locale, "docsConfigBotToken")}</td></tr>
+        <tr><td>user_id</td><td>integer</td><td>required</td><td>{ts(locale, "docsConfigUserId")}</td></tr>
+        <tr><td>hook_port</td><td>integer</td><td>9377</td><td>{ts(locale, "docsConfigHookPort")}</td></tr>
+        <tr><td>hook_secret</td><td>string</td><td>auto</td><td>{ts(locale, "docsConfigHookSecret")}</td></tr>
+        <tr><td>locale</td><td>string</td><td>"en"</td><td>{ts(locale, "docsConfigLocale")}</td></tr>
+        <tr><td>agents</td><td>string[]</td><td>["claude-code"]</td><td>{ts(locale, "docsConfigAgents")}</td></tr>
+        <tr><td>projects</td><td>array</td><td>[]</td><td>{ts(locale, "docsConfigProjects")}</td></tr>
+      </tbody>
+    </table>
+
+    <p class="docs-content__config-tip">💡 {ts(locale, "docsConfigTip")}</p>
+  </section>
+
+  <section id="faq" class="docs-content__section">
+    <h2>{ts(locale, "docsFaqTitle")}</h2>
+    <div class="docs-content__faq-list">
+      <FaqItem question={ts(locale, "docsFaq1Q")} answer={ts(locale, "docsFaq1A")} />
+      <FaqItem question={ts(locale, "docsFaq2Q")} answer={ts(locale, "docsFaq2A")} />
+      <FaqItem question={ts(locale, "docsFaq3Q")} answer={ts(locale, "docsFaq3A")} />
+      <FaqItem question={ts(locale, "docsFaq4Q")} answer={ts(locale, "docsFaq4A")} />
+      <FaqItem question={ts(locale, "docsFaq5Q")} answer={ts(locale, "docsFaq5A")} />
+      <FaqItem question={ts(locale, "docsFaq6Q")} answer={ts(locale, "docsFaq6A")} />
+      <FaqItem question={ts(locale, "docsFaq7Q")} answer={ts(locale, "docsFaq7A")} />
+      <FaqItem question={ts(locale, "docsFaq8Q")} answer={ts(locale, "docsFaq8A")} />
+    </div>
+  </section>
+
+  <section class="docs-content__cta">
+    <h2>{ts(locale, "docsCtaTitle")}</h2>
+    <p>{ts(locale, "docsCtaSub")}</p>
+    <div class="docs-content__cta-btns">
+      <a href="https://github.com/kaida-palooza/ccpoke" target="_blank" rel="noopener" class="docs-content__cta-github">
+        ⭐ {ts(locale, "ctaGithub")}
+      </a>
+      <a href="#getting-started" class="docs-content__cta-start">
+        {ts(locale, "ctaGetStarted")}
+      </a>
+    </div>
+  </section>
+
+</article>
+
+<style>
+  .docs-content__subsection {
+    margin-top: 1.25rem;
+  }
+
+  .docs-content__config-file {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  .docs-content__config-tip {
+    font-size: 0.82rem;
+    color: var(--color-txt-3);
+    font-style: italic;
+  }
+</style>

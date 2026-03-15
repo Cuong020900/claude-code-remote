@@ -1,0 +1,27 @@
+---
+import { ts, type Locale, DEFAULT_LOCALE } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+function docsHref(loc: Locale): string {
+  return loc === DEFAULT_LOCALE ? `${base}docs/` : `${base}${loc}/docs/`;
+}
+---
+
+<footer class="py-8 border-t border-border mt-1">
+  <div class="max-w-content mx-auto px-6">
+    <p class="text-[0.78rem] text-txt-3 text-center flex items-center justify-center gap-2 flex-wrap">
+      <a href={docsHref(locale)} class="text-txt-3 hover:text-txt-2">{ts(locale, "footerDocs")}</a>
+      <span class="text-border">·</span>
+      <a href="https://github.com/kaida-palooza/ccpoke/releases" target="_blank" rel="noopener" class="text-txt-3 hover:text-txt-2">{ts(locale, "footerChangelog")}</a>
+      <span class="text-border">·</span>
+      <span>MIT</span>
+      <span class="text-border">·</span>
+      <a href="https://github.com/kaida-palooza/ccpoke" target="_blank" rel="noopener" class="text-txt-3 hover:text-txt-2">kaida-palooza/ccpoke</a>
+    </p>
+  </div>
+</footer>

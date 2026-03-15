@@ -1,0 +1,117 @@
+---
+import { ts, SUPPORTED_LOCALES, LOCALE_LABELS, DEFAULT_LOCALE, type Locale } from "../i18n";
+import { icons } from "../assets/icons";
+
+interface Props {
+  locale: Locale;
+  currentPath?: string;
+}
+
+const { locale, currentPath = "/" } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+function localePageHref(loc: Locale, path: string): string {
+  const cleanPath = path === "/" ? "" : path;
+  if (loc === DEFAULT_LOCALE) return `${base}${cleanPath ? cleanPath.slice(1) + "/" : ""}`;
+  return `${base}${loc}${cleanPath}/`;
+}
+---
+
+<nav class="sticky top-0 z-[100] backdrop-blur-[12px] border-b border-border" style="background: color-mix(in srgb, var(--color-bg) 88%, transparent)">
+  <div class="max-w-content mx-auto px-6 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-5">
+      <a href={localePageHref(locale, "/")} class="flex items-center gap-1.5 no-underline shrink-0" style="color: var(--color-accent)">
+        <span class="w-7 h-7 block [&>svg]:w-full [&>svg]:h-full" set:html={icons.logoFilled} />
+        <span class="font-bold text-base tracking-tight">ccpoke</span>
+      </a>
+      <a
+        href={localePageHref(locale, "/docs")}
+        class:list={[
+          "text-[0.78rem] font-semibold no-underline transition-colors duration-150 cursor-pointer nav-hide-mobile",
+          currentPath === "/docs" ? "text-accent" : "text-txt-2 hover:text-txt"
+        ]}
+      >
+        {ts(locale, "navDocs")}
+      </a>
+      <a
+        href={localePageHref(locale, "/brand")}
+        class:list={[
+          "text-[0.78rem] font-semibold no-underline transition-colors duration-150 cursor-pointer nav-hide-mobile",
+          currentPath === "/brand" ? "text-accent" : "text-txt-2 hover:text-txt"
+        ]}
+      >
+        {ts(locale, "navBrand")}
+      </a>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span class="theme-toggle__sun" set:html={icons.sun} />
+        <span class="theme-toggle__moon" set:html={icons.moon} />
+      </button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-trigger" id="langTrigger" type="button" aria-label={ts(locale, "ariaLanguage")}>
+          <span id="langCurrent">{LOCALE_LABELS[locale]}</span>
+          <Fragment set:html={icons.chevronDown} />
+        </button>
+        <div class="lang-menu">
+          {SUPPORTED_LOCALES.map((loc) => (
+            <a
+              href={localePageHref(loc, currentPath)}
+              class:list={["lang-option", { active: loc === locale }]}
+              data-locale={loc}
+              aria-current={loc === locale ? "true" : undefined}
+            >
+              {LOCALE_LABELS[loc]}
+            </a>
+          ))}
+        </div>
+      </div>
+      <a href="https://github.com/kaida-palooza/ccpoke" target="_blank" rel="noopener"
+        class="text-txt-3 hover:text-txt transition-colors duration-150 nav-hide-mobile flex items-center" aria-label={ts(locale, "ariaGitHub")}>
+        <span class="w-5 h-5" set:html={icons.github} />
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+
+<script>
+  import { setStorage } from "../utils/storage";
+
+  const themeToggle = document.getElementById("themeToggle");
+  themeToggle?.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    setStorage("theme", next);
+  });
+
+  const langDropdown = document.getElementById("langDropdown");
+  const langTrigger = document.getElementById("langTrigger");
+  langTrigger?.addEventListener("click", () => langDropdown?.classList.toggle("open"));
+  document.addEventListener("click", (e) => {
+    if (!langDropdown?.contains(e.target as Node)) langDropdown?.classList.remove("open");
+  });
+
+  document.querySelectorAll(".lang-option").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      const locale = (el as HTMLElement).dataset.locale;
+      if (locale) setStorage("locale", locale);
+
+      const query = window.location.search;
+      if (query) {
+        e.preventDefault();
+        window.location.href = (el as HTMLAnchorElement).href + query;
+      }
+    });
+  });
+
+  const navEl = document.querySelector('nav');
+  if (navEl) {
+    const onScroll = () => navEl.classList.toggle('scrolled', window.scrollY > 10);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

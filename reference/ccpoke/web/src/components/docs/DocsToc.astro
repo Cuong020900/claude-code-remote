@@ -1,0 +1,49 @@
+---
+import { ts, type Locale } from "../../i18n";
+
+interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  locale: Locale;
+  items: TocItem[];
+}
+
+const { locale, items } = Astro.props;
+---
+
+<aside class="docs-toc" id="docsToc">
+  <p class="docs-toc__title">{ts(locale, "docsTocHeading")}</p>
+  <nav class="docs-toc__list">
+    {items.map(({ id, label }) => (
+      <a href={`#${id}`} class="docs-toc__link" data-toc-id={id}>
+        {label}
+      </a>
+    ))}
+  </nav>
+</aside>
+
+<script>
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>("[data-toc-id]");
+  const tocIds = Array.from(tocLinks).map((a) => a.dataset.tocId!);
+  const tocTargets = tocIds
+    .map((id) => document.getElementById(id))
+    .filter(Boolean) as HTMLElement[];
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach((a) => a.classList.remove("docs-toc__link--active"));
+          const active = document.querySelector(`[data-toc-id="${entry.target.id}"]`);
+          active?.classList.add("docs-toc__link--active");
+        }
+      });
+    },
+    { rootMargin: "-80px 0px -60% 0px", threshold: 0 }
+  );
+
+  tocTargets.forEach((el) => observer.observe(el));
+</script>

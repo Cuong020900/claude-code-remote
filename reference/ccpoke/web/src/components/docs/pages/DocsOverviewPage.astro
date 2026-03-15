@@ -1,0 +1,54 @@
+---
+import { ts, type Locale } from "../../../i18n";
+import DocsPagination from "../DocsPagination.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<article class="docs-content">
+  <section id="overview" class="docs-content__section">
+    <h1>{ts(locale, "docsOverviewTitle")}</h1>
+    <p>{ts(locale, "docsOverviewDesc")}</p>
+    <p set:html={ts(locale, "docsOverviewDesc2")} />
+    <pre class="docs-content__diagram">{ts(locale, "docsOverviewDiagram")}</pre>
+  </section>
+
+  <section id="getting-started" class="docs-content__section">
+    <h2>{ts(locale, "docsGettingStartedTitle")}</h2>
+    <p>{ts(locale, "docsGettingStartedPrereqs")}</p>
+
+    <div class="docs-content__steps">
+      <div class="docs-content__step">
+        <span class="docs-content__step-num">1</span>
+        <div>
+          <h3>{ts(locale, "docsStep1Title")}</h3>
+          <p set:html={ts(locale, "docsStep1Desc")} />
+        </div>
+      </div>
+      <div class="docs-content__step">
+        <span class="docs-content__step-num">2</span>
+        <div>
+          <h3>{ts(locale, "docsStep2Title")}</h3>
+          <p set:html={ts(locale, "docsStep2Desc")} />
+          <pre class="docs-content__terminal">{ts(locale, "docsStep2Term")}</pre>
+        </div>
+      </div>
+      <div class="docs-content__step">
+        <span class="docs-content__step-num">3</span>
+        <div>
+          <h3>{ts(locale, "docsStep3Title")}</h3>
+          <p set:html={ts(locale, "docsStep3Desc")} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DocsPagination
+    locale={locale}
+    next={{ page: "cli", labelKey: "docsSidebarCli" }}
+  />
+</article>

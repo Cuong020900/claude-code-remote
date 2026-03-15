@@ -1,0 +1,63 @@
+---
+import { ts, type Locale } from "../../i18n";
+import { icons, type IconName } from "../../assets/icons";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const features: {
+  titleKey: string;
+  descKey: string;
+  bg: string;
+  text: string;
+  icon: IconName;
+}[] = [
+  {
+    titleKey: "featurePushTitle",
+    descKey: "featurePushDesc",
+    bg: "bg-accent-light",
+    text: "text-accent",
+    icon: "zap",
+  },
+  {
+    titleKey: "feature2wayTitle",
+    descKey: "feature2wayDesc",
+    bg: "bg-plum-light",
+    text: "text-plum",
+    icon: "repeat",
+  },
+  {
+    titleKey: "featureMultiSessionTitle",
+    descKey: "featureMultiSessionDesc",
+    bg: "bg-emerald-light",
+    text: "text-emerald",
+    icon: "bot",
+  },
+];
+---
+
+<section class="sect-section py-14 reveal" id="features">
+  <div class="mb-12">
+    <p class="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent mb-2 reveal-item">{ts(locale, "featuresLabel")}</p>
+    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight mb-2 reveal-item" style="transition-delay: 0.06s">{ts(locale, "featuresTitle")}</h2>
+  </div>
+
+  <div class="flex flex-col">
+    {features.map((feat, idx) => (
+      <div class:list={["grid grid-cols-[48px_1fr] gap-5 items-start py-7 feat-card reveal-item", idx < features.length - 1 ? "border-b border-border" : ""]} style={`transition-delay: ${idx * 0.1}s`}>
+        <div class:list={["w-12 h-12 rounded-xl flex items-center justify-center reveal-scale-in", feat.bg, feat.text]} style={`transition-delay: ${idx * 0.1 + 0.15}s`}>
+          <span class="w-[22px] h-[22px]" set:html={icons[feat.icon]} />
+        </div>
+        <div>
+          <h3 class="text-base font-bold mb-1">
+            {ts(locale, feat.titleKey)}
+          </h3>
+          <p class="text-[0.88rem] text-txt-2 leading-relaxed">{ts(locale, feat.descKey)}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

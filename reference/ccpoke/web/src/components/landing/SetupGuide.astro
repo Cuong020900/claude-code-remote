@@ -1,0 +1,65 @@
+---
+import { ts, type Locale } from "../../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<section class="sect-section py-14 reveal" id="setup">
+  <div class="mb-12">
+    <p class="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-accent mb-2 reveal-item">{ts(locale, "setupLabel")}</p>
+    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight mb-2 reveal-item" style="transition-delay: 0.06s">{ts(locale, "setupTitle")}</h2>
+    <p class="text-[0.95rem] text-txt-2 max-w-[460px] reveal-item" style="transition-delay: 0.12s">{ts(locale, "setupSub")}</p>
+  </div>
+
+  <div class="flex flex-col gap-10">
+    <div class="grid grid-cols-[32px_1fr] gap-4 reveal-item" style="transition-delay: 0.1s">
+      <div class="w-8 h-8 rounded-full bg-txt text-bg flex items-center justify-center text-[0.8rem] font-bold shrink-0">1</div>
+      <div class="min-w-0">
+        <h3 class="text-base font-bold mb-1.5">{ts(locale, "setupStep1Title")}</h3>
+        <p class="text-[0.88rem] text-txt-2 leading-relaxed" set:html={ts(locale, "setupStep1Desc")} />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-[32px_1fr] gap-4 reveal-item" style="transition-delay: 0.2s">
+      <div class="w-8 h-8 rounded-full bg-txt text-bg flex items-center justify-center text-[0.8rem] font-bold shrink-0">2</div>
+      <div class="min-w-0">
+        <h3 class="text-base font-bold mb-1.5">{ts(locale, "setupStep2Title")}</h3>
+        <pre class="step-term mt-3 bg-bg-code rounded-[10px] px-5 py-4 font-mono text-[0.78rem] text-term-sub leading-[1.9] overflow-x-auto max-w-full m-0"><span class="d">$ </span>npx -y ccpoke
+<span class="c">
+no config found — starting setup wizard...
+┌  🤖 ccpoke setup
+│
+◇  Language
+│  English
+│
+◇  Chat platform
+│  Telegram
+│
+◇  Bot Token
+│  ****:ABC-xxx
+│
+◇  ✓ Bot: @your_bot
+│
+◇  Scan QR or open link to connect:
+│  https://t.me/your_bot?start=setup
+│
+◆  ✓ Connected!
+│
+◇  Select AI agents (space to toggle)
+│  Claude Code, Cursor CLI
+│
+◆  Config saved · Hooks installed
+│
+└  🎉 Setup complete!
+
+ccpoke: hook server listening on localhost:9377
+ccpoke: telegram bot started</span></pre>
+        <p class="mt-2.5 text-[0.88rem] text-txt-2 leading-relaxed" set:html={ts(locale, "setupStep2Desc")} />
+      </div>
+    </div>
+  </div>
+</section>

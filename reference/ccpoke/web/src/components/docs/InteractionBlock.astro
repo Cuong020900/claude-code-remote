@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  trigger: string;
+  description: string;
+  demo: string;
+  flow?: string;
+}
+
+const { title, trigger, description, demo, flow } = Astro.props;
+---
+
+<div class="interact-block">
+  <p class="interact-block__title">{title}</p>
+  <p class="interact-block__trigger">{trigger}</p>
+  <p class="interact-block__desc">{description}</p>
+  <pre class="interact-block__demo">{demo}</pre>
+  {flow && (
+    <p class="interact-block__flow">{flow}</p>
+  )}
+</div>

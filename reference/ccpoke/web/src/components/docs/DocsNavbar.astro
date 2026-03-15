@@ -1,0 +1,112 @@
+---
+import { ts, SUPPORTED_LOCALES, LOCALE_LABELS, DEFAULT_LOCALE, type Locale } from "../../i18n";
+import { icons } from "../../assets/icons";
+
+interface Props {
+  locale: Locale;
+  currentPage: string;
+}
+
+const { locale, currentPage } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+function docsHref(page: string): string {
+  const prefix = locale === DEFAULT_LOCALE ? `${base}docs` : `${base}${locale}/docs`;
+  return page ? `${prefix}/${page}/` : `${prefix}/`;
+}
+
+function homeHref(): string {
+  return locale === DEFAULT_LOCALE ? base : `${base}${locale}/`;
+}
+
+function localeDocsHref(loc: Locale): string {
+  const prefix = loc === DEFAULT_LOCALE ? `${base}docs` : `${base}${loc}/docs`;
+  return currentPage ? `${prefix}/${currentPage}/` : `${prefix}/`;
+}
+
+const tabs = [
+  { page: "", label: ts(locale, "docsSidebarOverview") },
+  { page: "cli", label: "CLI" },
+  { page: "telegram", label: "Telegram" },
+  { page: "config", label: ts(locale, "docsSidebarConfig") },
+];
+---
+
+<nav class="docs-navbar" id="docsNavbar">
+  <div class="docs-navbar__inner">
+    <a href={homeHref()} class="docs-navbar__logo">
+      <span class="docs-navbar__logo-icon" set:html={icons.logoFilled} />
+      <span class="docs-navbar__logo-text">ccpoke <span class="docs-navbar__logo-label">{ts(locale, "navDocs")}</span></span>
+    </a>
+
+    <div class="docs-navbar__tabs" id="docsNavTabs">
+      {tabs.map(({ page, label }) => (
+        <a
+          href={docsHref(page)}
+          class:list={["docs-navbar__tab", { "docs-navbar__tab--active": currentPage === page }]}
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+
+    <div class="docs-navbar__actions">
+      <button class="theme-toggle" id="docsThemeToggle" type="button" aria-label="Toggle theme">
+        <span class="theme-toggle__sun" set:html={icons.sun} />
+        <span class="theme-toggle__moon" set:html={icons.moon} />
+      </button>
+      <div class="lang-dropdown" id="docsLangDropdown">
+        <button class="lang-trigger" id="docsLangTrigger" type="button" aria-label={ts(locale, "ariaLanguage")}>
+          <span id="docsLangCurrent">{LOCALE_LABELS[locale]}</span>
+          <Fragment set:html={icons.chevronDown} />
+        </button>
+        <div class="lang-menu">
+          {SUPPORTED_LOCALES.map((loc) => (
+            <a
+              href={localeDocsHref(loc)}
+              class:list={["lang-option", { active: loc === locale }]}
+              data-locale={loc}
+            >
+              {LOCALE_LABELS[loc]}
+            </a>
+          ))}
+        </div>
+      </div>
+      <a href="https://github.com/kaida-palooza/ccpoke" target="_blank" rel="noopener"
+        class="docs-navbar__github" aria-label={ts(locale, "ariaGitHub")}>
+        <span set:html={icons.github} />
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  import { setStorage } from "../../utils/storage";
+
+  const themeToggle = document.getElementById("docsThemeToggle");
+  themeToggle?.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    setStorage("theme", next);
+  });
+
+  const langDropdown = document.getElementById("docsLangDropdown");
+  const langTrigger = document.getElementById("docsLangTrigger");
+  langTrigger?.addEventListener("click", () => langDropdown?.classList.toggle("open"));
+  document.addEventListener("click", (e) => {
+    if (!langDropdown?.contains(e.target as Node)) langDropdown?.classList.remove("open");
+  });
+
+  document.querySelectorAll("#docsLangDropdown .lang-option").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      const locale = (el as HTMLElement).dataset.locale;
+      if (locale) setStorage("locale", locale);
+      const query = window.location.search;
+      if (query) {
+        e.preventDefault();
+        window.location.href = (el as HTMLAnchorElement).href + query;
+      }
+    });
+  });
+</script>

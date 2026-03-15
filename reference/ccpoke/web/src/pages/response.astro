@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ResponseViewer from "../components/response/ResponseViewer";
+import { ts } from "../i18n";
+
+const locale = "en";
+---
+
+<BaseLayout locale={locale} title={ts(locale, "responseTitle")} description={ts(locale, "responseMetaDesc")} currentPath="/response">
+  <script is:inline>
+    (function() {
+      var s = document.createElement('script');
+      s.src = 'https://telegram.org/js/telegram-web-app.js';
+      s.async = true;
+      s.onerror = function() {};
+      document.head.appendChild(s);
+    })();
+  </script>
+  <ResponseViewer locale="en" client:load />
+</BaseLayout>

@@ -1,0 +1,118 @@
+---
+import { ts, DEFAULT_LOCALE, type Locale } from "../../../i18n";
+import InteractionBlock from "../InteractionBlock.astro";
+import DocsPagination from "../DocsPagination.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const breadcrumbHref = locale === DEFAULT_LOCALE ? `${base}docs/` : `${base}${locale}/docs/`;
+---
+
+<article class="docs-content">
+  <nav class="docs-breadcrumb">
+    <a href={breadcrumbHref}>Docs</a>
+    <span class="docs-breadcrumb__sep">›</span>
+    {ts(locale, "docsTelegramTitle")}
+  </nav>
+  <section class="docs-content__section">
+    <h1>{ts(locale, "docsTelegramTitle")}</h1>
+    <p>{ts(locale, "docsTelegramDesc")}</p>
+
+    <div id="tg-commands" class="docs-content__subsection">
+      <h3>{ts(locale, "docsTgCommandsTitle")}</h3>
+      <p>{ts(locale, "docsTgCommandsDesc")}</p>
+      <div class="docs-config-table-wrap">
+        <table class="docs-config-table">
+          <thead>
+            <tr>
+              <th>{ts(locale, "docsTgCommandHeader")}</th>
+              <th>{ts(locale, "docsConfigDescHeader")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{ts(locale, "docsTgCmdStart")}</td>
+              <td>{ts(locale, "docsTgCmdStartDesc")}</td>
+            </tr>
+            <tr>
+              <td>{ts(locale, "docsTgCmdSessions")}</td>
+              <td>{ts(locale, "docsTgCmdSessionsDesc")}</td>
+            </tr>
+            <tr>
+              <td>{ts(locale, "docsTgCmdProjects")}</td>
+              <td>{ts(locale, "docsTgCmdProjectsDesc")}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tg-notifications" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgNotificationsTitle")}
+        trigger={ts(locale, "docsTgNotificationsTrigger")}
+        description={ts(locale, "docsTgNotificationsDesc")}
+        demo={ts(locale, "docsTgNotificationsDemo")}
+      />
+      <p class="docs-tip">
+        <svg class="docs-tip__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>{ts(locale, "docsTgChatGhostDraft")}</span>
+      </p>
+    </div>
+
+    <div id="tg-chat" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgChatTitle")}
+        trigger={ts(locale, "docsTgChatTrigger")}
+        description={ts(locale, "docsTgChatDesc")}
+        demo={ts(locale, "docsTgChatDemo")}
+      />
+      <p class="docs-warning">
+        <svg class="docs-warning__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span>{ts(locale, "docsTgChatRequirement")}</span>
+      </p>
+    </div>
+
+    <div id="tg-permissions" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgPermissionsTitle")}
+        trigger={ts(locale, "docsTgPermissionsTrigger")}
+        description={ts(locale, "docsTgPermissionsDesc")}
+        demo={ts(locale, "docsTgPermissionsDemo")}
+      />
+    </div>
+
+    <div id="tg-questions" class="docs-content__subsection">
+      <InteractionBlock
+        title={ts(locale, "docsTgQuestionsTitle")}
+        trigger={ts(locale, "docsTgQuestionsTrigger")}
+        description={ts(locale, "docsTgQuestionsDesc")}
+        demo={ts(locale, "docsTgQuestionsDemo")}
+      />
+    </div>
+  </section>
+
+  <DocsPagination
+    locale={locale}
+    prev={{ page: "cli", labelKey: "docsSidebarCli" }}
+    next={{ page: "discord", labelKey: "docsSidebarDiscord" }}
+  />
+</article>
+
+<style>
+  .docs-content__subsection {
+    margin-top: 1.25rem;
+  }
+</style>
